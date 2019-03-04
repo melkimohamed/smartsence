@@ -1,0 +1,15 @@
+openssl x509 -text -noout -in ca.crt
+show detail certif
+	openssl x509 -text -noout -in /var/lib/smartsence/hst-agent/keys/file..local.key
+
+	HST_SERVER=$(awk -F "=" '/^hostname/ {print $NF}' /etc/hst/hst-server.ini)
+	JAVA_PATH=$(awk -F "=" '/^home/ {print $NF"/bin"}' /etc/hst/hst-server.ini) 
+	P1=$(awk -F "=" '/^server.one_way_ssl.port/ {print $NF}' /etc/hst/conf/hst-server.ini | sed 's| ||')
+	P2=$(awk -F "=" '/^server.tow_way_ssl.port/ {print $NF}' /etc/hst/conf/hst-server.ini | sed 's| ||')
+	echo HST_SERVER
+	echo JAVA_PATH
+	echo P2
+	In hst server /keys : openssl s_client -connect ${HST_SERVER}:${P1} </dev/null | more
+	In hst server /keys : openssl s_client -connect ${HST_SERVER}:${P2} </dev/null | more
+	
+	${JAVA_PATH}/keytool -v - list -keystore keyname.p12
